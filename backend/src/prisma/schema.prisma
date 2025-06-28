@@ -1,0 +1,34 @@
+
+generator client {
+  provider = "prisma-client-js"
+
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id Int @id @default(autoincrement())
+  nome String
+  email String @unique
+  senha String
+}
+
+model Artista {
+  id Int @id @default(autoincrement())
+  nome String
+  genero String
+  semelhantes ArtistaSemelhante[] @relation("Principal")
+  relacionados ArtistaSemelhante[] @relation("Relacionado")
+
+}
+
+model ArtistaSemelhante {
+  id Int @id @default(autoincrement())
+  artista Artista@relation("Principal", fields: [artistaId], references: [id])
+  artistaId Int
+  semelhante Artista @relation("Relacionado", fields: [semelhanteId], references: [id])
+  semelhanteId Int
+}
