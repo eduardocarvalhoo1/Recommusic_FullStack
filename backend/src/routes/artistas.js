@@ -1,11 +1,10 @@
 import express from 'express';
-import prisma from '../config/prisma';
+import prisma from '../config/prisma.js';
 import { PrismaClient } from '@prisma/client';
 
 const app = express();
 const router = express.Router();
-app.use(express.json())
-app.listen(3000);
+app.use(express.json());
 
 app.use('/', router);
 
@@ -31,7 +30,7 @@ router.post('/artistas', async(req, res) => {
     }
 })
 
-router.get('/artistas', async(req, res) => {
+/*router.get('/artistas', async(req, res) => {
     const {genero} = req.query;
 
     try {
@@ -56,7 +55,7 @@ router.get('/artistas', async(req, res) => {
         console.error(error);
         res.status(500).json({erro: 'Erro ao buscar artistas'});
     }
-})
+})*/
 
 router.put('/artistas/:id', async (req, res) => {
     const {id} = req.params;
@@ -84,6 +83,41 @@ router.put('/artistas/:id', async (req, res) => {
         return res.status(500).json({erro: 'Erro ao atualizar artista'});
     }
 })
+router.get('/artistas', async (req, res) => {
+  const { nome } = req.query;
+
+  try {
+    // 1. Busca o artista principal pelo nome
+    const artistaPrincipal = await prisma.artista.findFirst({
+      where: {
+        nome: {
+          equals: nome,
+          mode: 'insensitive'
+        }
+      }
+    });
+
+    if (!artistaPrincipal) {
+      return res.status(404).json({ erro: 'Artista não encontrado' });
+    }
+
+    // 2. Busca artistas com o mesmo gênero, exceto ele mesmo
+    const semelhantes = await prisma.artista.findMany({
+      where: {
+        genero: artistaPrincipal.genero,
+        nome: {
+          not: artistaPrincipal.nome
+        }
+      }
+    });
+
+    return res.json(semelhantes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ erro: 'Erro ao buscar artistas semelhantes' });
+  }
+});
+
 
 router.delete('/artistas/:id', async(req, res) => {
     const {id} = req.params;
