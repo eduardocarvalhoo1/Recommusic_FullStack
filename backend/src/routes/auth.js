@@ -15,7 +15,7 @@ const jwt_secret = 'segredo'; // Colocar no .env se eu resolver subir
 const limitador = rateLimit({
     windowMs: 15 * 60 * 1000,
     limit: 8, // Se der zebra muda de limit pra max
-    message: 'Muitas tentativas de login. Tente novamente mais tarde.',
+    message:{ erro: 'Muitas tentativas de login. Tente novamente mais tarde.'},
 })
 
 router.post('/login', limitador, async (req, res) => {

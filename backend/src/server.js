@@ -2,7 +2,11 @@ import express from 'express';
 import authRoutes from '../src/routes/auth.js';
 import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
+import cors from 'cors';
 
+const app = express();
+
+app.use(cors());
 app.use(morgan('dev'));
 
 const limteReq = rateLimit({
@@ -11,7 +15,6 @@ const limteReq = rateLimit({
     message: 'Voce atingiu o limite de requisições. Tente novamente mais tarde.'
 })
 
-const app = express();
 app.use(express.json());
 
 app.use('/api', authRoutes);

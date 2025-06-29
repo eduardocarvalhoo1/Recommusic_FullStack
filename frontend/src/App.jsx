@@ -1,13 +1,29 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Login from './Pages/Login'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [logado, setLogado] = useState(!!localStorage.getItem('token'));
+
+  const handleLogin = () => {
+    setLogado(true);
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    setLogado(false);
+  }
 
   return (
-   <></>
+   <>
+      {logado ? (
+        <div style={{textAlign: 'center', padding: '2rem'}}>
+          <h2>Deu bom</h2>
+          <button onClick={handleLogout}>Sair</button>
+        </div>
+      ) : (
+        <Login onLogin={handleLogin} />
+      )}
+   </>
   )
 }
 
