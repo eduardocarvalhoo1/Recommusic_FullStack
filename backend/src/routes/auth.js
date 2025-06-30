@@ -8,10 +8,6 @@ const router = express.Router();
 
 const jwt_secret = 'segredo'; // Colocar no .env se eu resolver subir
 
-/* 
-    Depois colocar o Middleware auth para funcionar
-*/
-
 const limitador = rateLimit({
     windowMs: 15 * 60 * 1000,
     limit: 8, // Se der zebra muda de limit pra max

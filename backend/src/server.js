@@ -22,6 +22,13 @@ app.use(express.json());
 app.use('/api', authRoutes);
 app.use('/api', limteReq, artistasRoutes);
 
+app.use((err, req, res, next) => {
+  if (err.name === 'UnauthorizedError') {
+    return res.status(401).json({ erro: 'Token inválido ou não fornecido' });
+  }
+  next(err);
+});
+
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000');
 })

@@ -4,7 +4,7 @@ import CampoTexto from "../components/TextField";
 import NavBar from "../components/NavBar";
 import e from "cors";
 
-export default function Principal({onLogout}) {
+export default function Principal({onLogout, onNavigate}) {
     const [busca, setBusca] = useState('');
     const [resultado, setResultado] = useState('');
     const [erro, setErro] = useState('');
@@ -41,11 +41,11 @@ export default function Principal({onLogout}) {
 
     return(
     <>
-        <NavBar onLogout={onLogout} />
+        <NavBar onLogout={onLogout} onNavigate={onNavigate} />
 
         <Container maxWidth = "sm">
             <Box mt={5} textAlign={"center"}>
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h4" gutterBottom>
                     Buscar artistas
                 </Typography>
 
