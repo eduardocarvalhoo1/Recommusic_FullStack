@@ -3,6 +3,7 @@ import prisma from '../config/prisma.js';
 import { PrismaClient } from '@prisma/client';
 import autenticarToken from './autenticacao.js';
 
+
 const router = express.Router();
 
 router.post('/artistas', autenticarToken, async(req, res) => {
@@ -20,6 +21,8 @@ router.post('/artistas', autenticarToken, async(req, res) => {
             }
         })
 
+        
+
         res.status(201).json(novoArtista);
 
     } catch (error) {
@@ -27,32 +30,6 @@ router.post('/artistas', autenticarToken, async(req, res) => {
     }
 })
 
-/*router.get('/artistas', async(req, res) => {
-    const {genero} = req.query;
-
-    try {
-        let artistas;
-
-        if (genero) {
-            artistas = await prisma.artista.findMany({
-                where: {
-                    genero: {
-                        equals: genero,
-                        mode: 'insensitive'
-                    }
-                }
-            })
-        }
-        else{
-            artistas = await prisma.artista.findMany();
-        }
-
-        res.json(artistas);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({erro: 'Erro ao buscar artistas'});
-    }
-})*/
 
 router.put('/artistas/:id', autenticarToken, async (req, res) => {
     const {id} = req.params;

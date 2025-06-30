@@ -4,10 +4,12 @@ import artistasRoutes from '../src/routes/artistas.js'
 import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
 import cors from 'cors';
+import compression from 'compression';
 
 const app = express();
 
 app.use(cors());
+app.use(compression());
 
 app.use(morgan('dev'));
 
